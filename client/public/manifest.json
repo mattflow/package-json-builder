@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "package.json builder",
+  "name": "package.json builder",
   "icons": [
     {
       "src": "favicon.ico",
