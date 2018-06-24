@@ -28,7 +28,6 @@ app.get('/npm/search/:name', (req, res) => {
 });
 
 if (process.env.NODE_ENV === 'production' && cluster.isMaster) {
-  console.log(`master ${process.pid} is running`);
   for (let i = 0; i < cpus; i++) {
     cluster.fork();
   }
