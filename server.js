@@ -1,6 +1,8 @@
 const express = require('express');
 const child_process = require('child_process');
 const path = require('path');
+const cluster = require('cluster');
+const cpus = require('os').cpus().length;
 const app = express();
 
 const port = process.env.PORT || 8080;
@@ -25,6 +27,16 @@ app.get('/npm/search/:name', (req, res) => {
   );
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
-});
+if (process.env.NODE_ENV === 'production' && cluster.isMaster) {
+  console.log(`master ${process.pid} is running`);
+  for (let i = 0; i < cpus; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', () => {
+    cluster.fork();
+  });
+} else {
+  app.listen(port);
+}
+
