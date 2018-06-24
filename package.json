@@ -1,8 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "start": "cd client && npm run build && cd ../ && node server",
-    "dev": "concurrently \"nodemon server\" \"cd client && yarn start\""
+    "start": "cd client && yarn build && cd ../ && node server",
+    "dev": "concurrently \"nodemon server\" \"cd client && yarn start\"",
+    "postinstall": "cd client && yarn install"
   },
   "dependencies": {
     "express": "^4.16.3"
