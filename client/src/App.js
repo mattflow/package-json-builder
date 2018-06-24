@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ClipboardJS from 'clipboard';
+import NamedInput from './components/NamedInput';
 import './App.css';
 
 class App extends Component {
@@ -11,6 +12,10 @@ class App extends Component {
       version: '',
       proxy: '',
       description: '',
+      random: '',
+      homepage:'',
+      license: '',
+      author: '',
       packageJson: {},
     };
 
@@ -47,26 +52,17 @@ class App extends Component {
           </div>
           <div className="row">
             <div className="col-md-6">
-              <div className="form-group">
-                <label for="name">Name:</label>
-                <input className="form-control" placeholder="package name..." value={this.state.name} onChange={this.handlePropertyChange('name')} />
-              </div>
-              <div className="form-group">
-                <label for="name">Version:</label>
-                <input className="form-control" placeholder="1.0.0" value={this.state.version} onChange={this.handlePropertyChange('version')} />
-              </div>
-              <div className="form-group">
-                <label for="name">Proxy:</label>
-                <input className="form-control" placeholder="http://localhost:8080" value={this.state.proxy} onChange={this.handlePropertyChange('proxy')} />
-              </div>
-              <div className="form-group">
-                <label for="name">Description:</label>
-                <input className="form-control" placeholder="description..." value={this.state.description} onChange={this.handlePropertyChange('description')} />
-              </div>
+              <NamedInput label="Name" placeholder="package name..." value={this.state.name} handleChange={this.handlePropertyChange} />
+              <NamedInput label="Version" placeholder="1.0.0" value={this.state.version} handleChange={this.handlePropertyChange} />
+              <NamedInput label="Proxy" placeholder="http://localhost:8080" value={this.state.proxy} handleChange={this.handlePropertyChange} />
+              <NamedInput label="Description" placeholder="description..." value={this.state.description} handleChange={this.handlePropertyChange} />
+              <NamedInput label="Homepage" placeholder="https://github.com/owner/project#readme" value={this.state.homepage} handleChange={this.handlePropertyChange} />
+              <NamedInput label="License" placeholder="MIT" value={this.state.license} handleChange={this.handlePropertyChange} />
+              <NamedInput label="Author" placeholder="your name..." value={this.state.author} handleChange={this.handlePropertyChange} />
             </div>
             <div className="col-md-6">
               <textarea id="packageJson" rows="25" readOnly className="form-control" value={JSON.stringify(this.state.packageJson, null, 2)}/>
-              <input type="button" className="copyBtn btn btn-link" value="copy" data-clipboard-target="#packageJson" />
+              <input type="button" className="copyBtn btn btn-link" value="copy to clipboard" data-clipboard-target="#packageJson" />
             </div>
           </div>
         </div>

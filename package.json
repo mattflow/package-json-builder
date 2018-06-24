@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "cd client && yarn build && cd ../ && node server",
+    "start": "cd client && npm run build && cd ../ && node server",
     "dev": "concurrently \"nodemon server\" \"cd client && yarn start\""
   },
   "dependencies": {
