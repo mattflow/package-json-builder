@@ -16,6 +16,7 @@ class App extends Component {
       homepage:'',
       license: '',
       author: '',
+      main: '',
       packageJson: {},
     };
 
@@ -59,10 +60,18 @@ class App extends Component {
               <NamedInput label="Homepage" placeholder="https://github.com/owner/project#readme" value={this.state.homepage} handleChange={this.handlePropertyChange} />
               <NamedInput label="License" placeholder="MIT" value={this.state.license} handleChange={this.handlePropertyChange} />
               <NamedInput label="Author" placeholder="your name..." value={this.state.author} handleChange={this.handlePropertyChange} />
+              <NamedInput label="Main" placeholder="index.js" value={this.state.main} handleChange={this.handlePropertyChange} />
             </div>
             <div className="col-md-6">
               <textarea id="packageJson" rows="25" readOnly className="form-control" value={JSON.stringify(this.state.packageJson, null, 2)}/>
-              <input type="button" className="copyBtn btn btn-link" value="copy to clipboard" data-clipboard-target="#packageJson" />
+              <ul className="nav nav-pills">
+                <li role="presentation">
+                  <a type="button" className="copyBtn btn btn-link" data-clipboard-target="#packageJson">copy to clipboard</a>
+                </li>
+                <li role="presentation">
+                  <a className="btn btn-link" download="package.json" href={'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.state.packageJson, null, 2))}>download package.json</a>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
