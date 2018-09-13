@@ -36,6 +36,8 @@ if (process.env.NODE_ENV === 'production' && cluster.isMaster) {
     cluster.fork();
   });
 } else {
-  app.listen(port);
+  app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+  });
 }
 
