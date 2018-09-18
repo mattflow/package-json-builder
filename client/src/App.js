@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import ClipboardJS from 'clipboard';
 import NamedInput from './components/NamedInput';
+import ShortId from 'shortid';
 import './App.css';
+
+const ENTER = 13;
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +24,7 @@ class App extends Component {
       package: '',
       view: 0,
       searchResults: [],
+      searchLoading: false,
     };
 
     new ClipboardJS('.copyBtn');
@@ -29,6 +33,16 @@ class App extends Component {
     this.setView = this.setView.bind(this);
     this.handlePackageInput = this.handlePackageInput.bind(this);
     this.searchNpm = this.searchNpm.bind(this);
+    this.enterSubmit = this.enterSubmit.bind(this);
+  }
+
+  enterSubmit(cb) {
+    return (e) => {
+      const keyCode = e.which || e.keyCode; 
+      if (keyCode === ENTER) {
+        cb();
+      }
+    }
   }
 
   handlePropertyChange(property) {
@@ -54,13 +68,19 @@ class App extends Component {
   }
 
   searchNpm() {
-    fetch(`/npm/search/${this.state.package}`).then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          searchResults: responseJson,
-          package: '',
-        });
+    if (this.state.package.trim() !== '') {
+      this.setState({
+        searchLoading: true,
       });
+      fetch(`/npm/search/${this.state.package}`).then(response => response.json())
+        .then(responseJson => {
+          this.setState({
+            searchResults: responseJson,
+            package: '',
+            searchLoading: false,
+          });
+        });
+    }
   }
 
   setView(view) {
@@ -77,7 +97,7 @@ class App extends Component {
         <div className="container">
           <div className="row">
             <div className="col-xs-12">
-              <div class="alert alert-warning" role="alert">This tool is still under development and some features may not work. Sorry for the inconvenience!</div>
+              <div className="alert alert-warning" role="alert">This tool is still under development and some features may not work. Sorry for the inconvenience!</div>
               <h1>package.json builder</h1>
               <hr />
             </div>
@@ -102,10 +122,10 @@ class App extends Component {
               <div style={{display: this.state.view === 1 ? 'block' : 'none'}}>
                 <div className="form-group">
                   <label>Package name:</label>
-                  <input className="form-control" type="input" placeholder="react..." value={this.state.package} onInput={this.handlePackageInput} />
+                  <input className="form-control" type="input" placeholder="react..." value={this.state.package} onInput={this.handlePackageInput} onKeyDown={this.enterSubmit(this.searchNpm)} />
                 </div>
                 <input className="btn btn-primary" style={{marginBottom: '20px',}} type="submit" value="Search" onClick={this.searchNpm} />
-                <h4>Results</h4>
+                {this.state.searchLoading ? <h4>Loading...</h4> : <h4>Results</h4>}
                 <table className="table">
                   <thead>
                     <tr>
@@ -116,7 +136,7 @@ class App extends Component {
                   </thead>
                   <tbody>
                     {this.state.searchResults.map((result) =>
-                      <tr>
+                      <tr key={ShortId.generate()}>
                         <td>{result.name}</td>
                         <td>{result.version}</td>
                         <td><input type="button" className="btn btn-small btn-default" value="Add" /></td>
