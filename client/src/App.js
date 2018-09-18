@@ -77,7 +77,7 @@ class App extends Component {
         <div className="container">
           <div className="row">
             <div className="col-xs-12">
-              <div class="alert alert-warning" role="alert">This tool is still under development and some features may not work. Sorry for the invonvenience!</div>
+              <div class="alert alert-warning" role="alert">This tool is still under development and some features may not work. Sorry for the inconvenience!</div>
               <h1>package.json builder</h1>
               <hr />
             </div>
