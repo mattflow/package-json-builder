@@ -34,6 +34,21 @@ class App extends Component {
     this.handlePackageInput = this.handlePackageInput.bind(this);
     this.searchNpm = this.searchNpm.bind(this);
     this.enterSubmit = this.enterSubmit.bind(this);
+    this.addPackage = this.addPackage.bind(this);
+  }
+
+  addPackage(pkg) {
+    return () => {
+      const packageJson = this.state.packageJson;
+      const dependencies = packageJson.dependencies !== void 0 ? packageJson.dependencies : {};
+      if (dependencies[pkg.name] === void 0) {
+        dependencies[pkg.name] = pkg.version;
+        packageJson.dependencies = dependencies;
+        this.setState({
+          packageJson,
+        });
+      }
+    }
   }
 
   enterSubmit(cb) {
@@ -97,7 +112,7 @@ class App extends Component {
         <div className="container">
           <div className="row">
             <div className="col-xs-12">
-              <div className="alert alert-warning" role="alert">This tool is still under development and some features may not work. Sorry for the inconvenience!</div>
+              <div className="alert alert-warning" role="alert">This tool is still under development and some features are not yet implemented. Sorry for the inconvenience!</div>
               <h1>package.json builder</h1>
               <hr />
             </div>
@@ -139,7 +154,7 @@ class App extends Component {
                       <tr key={ShortId.generate()}>
                         <td>{result.name}</td>
                         <td>{result.version}</td>
-                        <td><input type="button" className="btn btn-small btn-default" value="Add" /></td>
+                        <td><input type="button" className="btn btn-small btn-default" value="Add" onClick={this.addPackage(result)} /></td>
                       </tr>
                     )}
                   </tbody>
